@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const response = await fetch("http://localhost:5000/api/stories");
+    const response = await fetch("https://storyclub.onrender.com/api/stories");
     const stories = await response.json();
 
     const storiesContainer = document.getElementById("stories-container");
