@@ -15,6 +15,9 @@ const storySchema = new mongoose.Schema({
     title: String,
     content: String,
     createdAt: { type: Date, default: Date.now }
+    likes: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
+    likedBy: { type: [String], default: [] } // Track users who liked the story
 });
 
 const Story = mongoose.model("Story", storySchema);
