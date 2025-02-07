@@ -14,8 +14,7 @@ mongoose.connect("mongodb+srv://manishbehera1400:Mpqhi69EVz9wQsjt@storypub.wbxjr
 const storySchema = new mongoose.Schema({
     title: String,
     content: String,
-    createdAt: { type: Date, default: Date.now }
-    likes: { type: Number, default: 0 },
+    createdAt: { type: Date, default: Date.now },
     likes: { type: Number, default: 0 },
     likedBy: { type: [String], default: [] } // Track users who liked the story
 });
@@ -30,6 +29,25 @@ app.post("/api/stories", async (req, res) => {
         res.status(201).json(newStory);
     } catch (error) {
         res.status(500).json({ error: "Error saving story" });
+    }
+});
+
+app.post("/api/stories/:id/like", async (req, res) => {
+    try {
+        const userId = req.body.userId; // Assume userId is sent in the request body
+        const story = await Story.findById(req.params.id);
+        if (!story) {
+            return res.status(404).json({ error: "Story not found" });
+        }
+        if (story.likedBy.includes(userId)) {
+            return res.status(400).json({ error: "User has already liked this story" });
+        }
+        story.likes += 1;
+        story.likedBy.push(userId);
+        await story.save();
+        res.json(story);
+    } catch (error) {
+        res.status(500).json({ error: "Error liking story" });
     }
 });
 
